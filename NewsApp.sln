@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34322.80
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsApp.Api", "NewsApp\NewsApp.Api.csproj", "{B477E5CC-FE44-49EC-ACDD-296C40AB8D9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1C63D95B-E951-4885-BB38-41EEBE06B0AF} = {1C63D95B-E951-4885-BB38-41EEBE06B0AF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsApp.Core", "NewsApp.Core\NewsApp.Core.csproj", "{1C63D95B-E951-4885-BB38-41EEBE06B0AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B477E5CC-FE44-49EC-ACDD-296C40AB8D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B477E5CC-FE44-49EC-ACDD-296C40AB8D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B477E5CC-FE44-49EC-ACDD-296C40AB8D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B477E5CC-FE44-49EC-ACDD-296C40AB8D9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C63D95B-E951-4885-BB38-41EEBE06B0AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C63D95B-E951-4885-BB38-41EEBE06B0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C63D95B-E951-4885-BB38-41EEBE06B0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C63D95B-E951-4885-BB38-41EEBE06B0AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4E925CA4-A5BA-45BE-9E98-7F2885E6DA90}
+	EndGlobalSection
+EndGlobal
