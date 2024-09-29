@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using NewsApp.Core.Entities.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
 using NewsApp.Core.Services.UsersServices.Interfaces;
 using NewsApp.Core.Services.UsersServices.Models;
 
@@ -18,7 +16,6 @@ namespace NewsApp.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = nameof(PoliciesEnum.God))]
         public async Task<IActionResult> SignUp([FromBody] UserSignUpRequestModel request)
         {
             var result = await _usersService.UserSignUp(request);

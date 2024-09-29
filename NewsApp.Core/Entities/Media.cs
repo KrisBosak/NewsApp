@@ -8,6 +8,6 @@
         public string Type { get; set; } = string.Empty;
 
         public int ArticleId { get; set; }
-        public virtual Articles Article { get; set; } = new();
+        public virtual Article Article { get; set; } = new();
     }
 }

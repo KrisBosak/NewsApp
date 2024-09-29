@@ -1,13 +1,13 @@
 ﻿namespace NewsApp.Core.Entities
 {
-    public class Categories
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public DateTimeOffset CreatedAt { get; set; }
 
-        public virtual ICollection<Articles> Articles { get; set; } = new List<Articles>();
-        public virtual ICollection<Subscriptions> Subscriptions { get; set; } = new List<Subscriptions>();
+        public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }
 }

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NewsApp.Api.Data;
+using NewsApp.Core.Data;
 
 #nullable disable
 
-namespace NewsApp.Api.Migrations
+namespace NewsApp.Core.Data.Migrations
 {
     [DbContext(typeof(NewsDbContext))]
     partial class NewsDbContextModelSnapshot : ModelSnapshot
@@ -233,7 +233,7 @@ namespace NewsApp.Api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Categories", b =>
@@ -263,7 +263,7 @@ namespace NewsApp.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Comments", b =>
@@ -301,7 +301,7 @@ namespace NewsApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Likes", b =>
@@ -335,7 +335,7 @@ namespace NewsApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Media", b =>
@@ -373,7 +373,7 @@ namespace NewsApp.Api.Migrations
                     b.HasIndex("ArticleId")
                         .IsUnique();
 
-                    b.ToTable("Media");
+                    b.ToTable("Media", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Subscriptions", b =>
@@ -407,7 +407,7 @@ namespace NewsApp.Api.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Users", b =>

@@ -9,7 +9,7 @@ namespace NewsApp.Core.Services
 {
     public sealed class AuthService(IConfiguration configuration)
     {
-        public string CreateToken(Users userRequest, string userRole)
+        public string CreateToken(User userRequest, string userRole)
         {
             string key = configuration["Jwt:Key"] ?? string.Empty;
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

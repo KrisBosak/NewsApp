@@ -1,6 +1,6 @@
 ﻿namespace NewsApp.Core.Entities
 {
-    public class Articles
+    public class Article
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -16,15 +16,15 @@
         public int CommentsCount { get; set; }
 
         public string AuthorId { get; set; } = string.Empty;
-        public virtual Users Author { get; set; } = new();
+        public virtual User Author { get; set; } = new();
         // I was thinking about making this a one to many relationship but... I prefer when categories are specific.
         public int CategoryId { get; set; }
-        public virtual Categories Category { get; set; } = new();
+        public virtual Category Category { get; set; } = new();
         // Same as category really, I feel like one picture should be enough per news
         public int MediaId { get; set; }
         public virtual Media Media { get; set; } = new();
 
-        public virtual ICollection<Comments> Comments { get; set; } = new List<Comments>();
-        public virtual ICollection<Likes> Likes { get; set; } = new List<Likes>();
+        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }

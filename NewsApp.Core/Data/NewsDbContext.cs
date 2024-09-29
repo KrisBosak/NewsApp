@@ -2,23 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using NewsApp.Core.Entities;
 
-namespace NewsApp.Api.Data
+namespace NewsApp.Core.Data
 {
-    public class NewsDbContext : IdentityDbContext<Users>
+    public class NewsDbContext : IdentityDbContext<User>
     {
         public NewsDbContext(DbContextOptions<NewsDbContext> options) : base(options) { }
 
-        public DbSet<Articles> Articles { get; set; }
-        public DbSet<Categories> Categories { get; set; }
+        public DbSet<Article> Articles { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Media> Media { get; set; }
-        public DbSet<Likes> Likes { get; set; }
-        public DbSet<Comments> Comments { get; set; }
-        public DbSet<Subscriptions> Subscriptions { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             // Articles
-            builder.Entity<Articles>(entity =>
+            builder.Entity<Article>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.Title).HasColumnName("Title").HasMaxLength(250);
@@ -50,13 +50,13 @@ namespace NewsApp.Api.Data
 
                 entity.HasOne(e => e.Media)
                     .WithOne(m => m.Article)
-                    .HasForeignKey<Articles>(d => d.MediaId)
+                    .HasForeignKey<Article>(d => d.MediaId)
                     .HasConstraintName("fk_Articles_Media")
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
             // Users
-            builder.Entity<Users>(entity =>
+            builder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.IsAuthor).HasColumnName("IsAuthor");
@@ -89,7 +89,7 @@ namespace NewsApp.Api.Data
             });
 
             // Categories
-            builder.Entity<Categories>(entity =>
+            builder.Entity<Category>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.Name).HasColumnName("Name").HasMaxLength(125);
@@ -122,7 +122,7 @@ namespace NewsApp.Api.Data
             });
 
             // Comments
-            builder.Entity<Comments>(entity =>
+            builder.Entity<Comment>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.Content).HasColumnName("Content").HasColumnType("nvarchar(max)");
@@ -141,7 +141,7 @@ namespace NewsApp.Api.Data
             });
 
             // Likes
-            builder.Entity<Likes>(entity =>
+            builder.Entity<Like>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt");
@@ -163,7 +163,7 @@ namespace NewsApp.Api.Data
             });
 
             // Subscriptions
-            builder.Entity<Subscriptions>(entity =>
+            builder.Entity<Subscription>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("Id");
                 entity.Property(e => e.SubscribedAt).HasColumnName("SubscribedAt");

@@ -8,10 +8,10 @@ namespace NewsApp.Core.Services.UsersServices
 {
     public class UsersService : IUsersService
     {
-        private readonly UserManager<Users> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly AuthService authService;
 
-        public UsersService(UserManager<Users> userManager, AuthService authService)
+        public UsersService(UserManager<User> userManager, AuthService authService)
         {
             this._userManager = userManager;
             this.authService = authService;
@@ -22,7 +22,7 @@ namespace NewsApp.Core.Services.UsersServices
             IdentityResult result = new();
             if (await _userManager.FindByEmailAsync(request.Email) == null)
             {
-                var newUser = new Users
+                var newUser = new User
                 {
                     UserName = request.UserName,
                     Email = request.Email,
@@ -47,7 +47,7 @@ namespace NewsApp.Core.Services.UsersServices
 
         public async Task<string> UserLogIn(UserLogInRequestModel request)
         {
-            Users? user = await _userManager.FindByEmailAsync(request.Email);
+            User? user = await _userManager.FindByEmailAsync(request.Email);
             
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
             {

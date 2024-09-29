@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NewsApp.Api.Data;
+using NewsApp.Core.Data;
 using NewsApp.Core.Entities;
 using NewsApp.Core.Entities.Enums;
 using NewsApp.Core.Services;
@@ -19,7 +19,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<NewsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddIdentity<Users, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<NewsDbContext>()
     .AddDefaultTokenProviders();
 
@@ -41,7 +41,6 @@ builder.Services.AddSwaggerGen(g =>
         Scheme = JwtBearerDefaults.AuthenticationScheme,
         BearerFormat = "JWT"
     };
-
     g.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
 
     var securityRequirement = new OpenApiSecurityRequirement
@@ -58,7 +57,6 @@ builder.Services.AddSwaggerGen(g =>
             []
         }
     };
-
     g.AddSecurityRequirement(securityRequirement);
 });
 
@@ -118,8 +116,10 @@ app.UseSwaggerUI();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
+
     await InitializeData.SeedRoles(services);
     await InitializeData.SeedUsers(services);
+    await InitializeData.SeedCategories(services);
 }
 
 // Configure the HTTP request pipeline.

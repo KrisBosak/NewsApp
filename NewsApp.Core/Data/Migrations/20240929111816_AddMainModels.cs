@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NewsApp.Api.Migrations
+namespace NewsApp.Core.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddMainModels : Migration
