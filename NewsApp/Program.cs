@@ -2,10 +2,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NewsApp.Api.Data;
 using NewsApp.Core.Entities;
 using NewsApp.Core.Entities.Enums;
 using NewsApp.Core.Services;
+using NewsApp.Core.Services.UsersServices;
+using NewsApp.Core.Services.UsersServices.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +22,45 @@ builder.Services.AddDbContext<NewsDbContext>(options =>
 builder.Services.AddIdentity<Users, IdentityRole>()
     .AddEntityFrameworkStores<NewsDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddSingleton<AuthService>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(g =>
+{
+    g.SwaggerDoc("v1", new OpenApiInfo { Title = "News app", Version = "v1" });
+    g.CustomSchemaIds(id => id.FullName!.Replace('*', '-'));
+
+    var securityScheme = new OpenApiSecurityScheme
+    {
+        Name = "Authentication",
+        Description = "Enter the token you recieved after successful login",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        BearerFormat = "JWT"
+    };
+
+    g.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, securityScheme);
+
+    var securityRequirement = new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            []
+        }
+    };
+
+    g.AddSecurityRequirement(securityRequirement);
+});
 
 builder.Services.AddCors(options =>
 {
@@ -51,27 +93,27 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy =>
-        policy.RequireRole(
-            RolesEnum.Admin.ToString()
+    options.AddPolicy(PoliciesEnum.God.ToString(), policy =>
+        policy.RequireClaim(
+            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.Admin.ToString()
         )
     );
-    options.AddPolicy("AuthorPolicy", policy => 
-        policy.RequireRole(
-            RolesEnum.Author.ToString(),
-            RolesEnum.Admin.ToString()
+    options.AddPolicy(PoliciesEnum.MustBeRegisteredAuthor.ToString(), policy => 
+        policy.RequireClaim(
+            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.Author.ToString(), RolesEnum.Admin.ToString()
         )
     );
-    options.AddPolicy("UserPolicy", policy => 
+    options.AddPolicy(PoliciesEnum.MustBeRegistered.ToString(), policy => 
         policy.RequireRole(
-            RolesEnum.User.ToString(), 
-            RolesEnum.Author.ToString(), 
-            RolesEnum.Admin.ToString()
+            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.User.ToString(), RolesEnum.Author.ToString(), RolesEnum.Admin.ToString()
         )
     );
 });
 
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 using (var scope = app.Services.CreateScope())
 {
