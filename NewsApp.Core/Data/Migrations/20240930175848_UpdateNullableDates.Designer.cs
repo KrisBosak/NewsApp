@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsApp.Core.Data;
 
@@ -11,9 +12,11 @@ using NewsApp.Core.Data;
 namespace NewsApp.Core.Data.Migrations
 {
     [DbContext(typeof(NewsDbContext))]
-    partial class NewsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240930175848_UpdateNullableDates")]
+    partial class UpdateNullableDates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,7 +236,7 @@ namespace NewsApp.Core.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Category", b =>
@@ -263,7 +266,7 @@ namespace NewsApp.Core.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Comment", b =>
@@ -301,7 +304,7 @@ namespace NewsApp.Core.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Like", b =>
@@ -335,7 +338,7 @@ namespace NewsApp.Core.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Media", b =>
@@ -373,7 +376,7 @@ namespace NewsApp.Core.Data.Migrations
                     b.HasIndex("ArticleId")
                         .IsUnique();
 
-                    b.ToTable("Media", (string)null);
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.Subscription", b =>
@@ -407,7 +410,7 @@ namespace NewsApp.Core.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("NewsApp.Core.Entities.User", b =>

@@ -8,10 +8,10 @@ namespace NewsApp.Core.Entities
         public bool IsAuthor { get; set; }
         public bool IsActive { get; set; }
     
-        public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
-        public virtual ICollection<Subscription> UserSubscriptions { get; set; } = new List<Subscription>();
-        public virtual ICollection<Subscription> AuthorsSubscribers { get; set; } = new List<Subscription>();
-        public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
-        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
+        public virtual ICollection<Article>? Articles { get; set; }
+        public virtual ICollection<Subscription>? UserSubscriptions { get; set; }
+        public virtual ICollection<Subscription>? AuthorsSubscribers { get; set; }
+        public virtual ICollection<Comment>? Comments { get; set; }
+        public virtual ICollection<Like>? Likes { get; set; }
     }
 }

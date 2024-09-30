@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NewsApp.Core.Entities;
 using NewsApp.Core.Entities.Enums;
 using NewsApp.Core.Services.UsersServices.Interfaces;
@@ -36,8 +37,8 @@ namespace NewsApp.Core.Services.UsersServices
 
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(newUser, request.IsAuthor 
-                        ? RolesEnum.Author.ToString() 
+                    await _userManager.AddToRoleAsync(newUser, request.IsAuthor
+                        ? RolesEnum.Author.ToString()
                         : RolesEnum.User.ToString());
                 }
             }
@@ -48,13 +49,20 @@ namespace NewsApp.Core.Services.UsersServices
         public async Task<string> UserLogIn(UserLogInRequestModel request)
         {
             User? user = await _userManager.FindByEmailAsync(request.Email);
-            
+
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 return string.Empty;
             }
 
             return authService.CreateToken(user, (await _userManager.GetRolesAsync(user)).First());
+        }
+
+        public async Task<IEnumerable<User>> GetAuthors()
+        {
+            return await _userManager.Users
+                .Where(x => x.IsAuthor)
+                .ToListAsync();
         }
     }
 }

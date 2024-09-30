@@ -24,7 +24,7 @@ namespace NewsApp.Core.Services
                     new Claim(JwtRegisteredClaimNames.Email, userRequest.Email!),
                     new Claim("role", userRole)
                 ]),
-                Expires = DateTime.UtcNow.AddMinutes(configuration.GetValue<int>("Jwt:ExpirationInMinutes")),
+                Expires = DateTime.Now.AddMinutes(configuration.GetValue<int>("Jwt:ExpirationInMinutes")),
                 SigningCredentials = credentials,
                 Issuer = configuration["Jwt:Issuer"],
                 Audience = configuration["Jwt:Audience"]

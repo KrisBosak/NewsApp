@@ -46,6 +46,19 @@ namespace NewsApp.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet]
+        [Route("/authors")]
+        public async Task<IActionResult> GetAuthors()
+        {
+            var result = await _usersService.GetAuthors();
+
+            if (result == null)
+            {
+                return NotFound("There are no authors.");
+            }
+
+            return Ok(result);
+        }
         // reset password 
         // edit user
     }
