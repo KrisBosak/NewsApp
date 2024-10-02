@@ -5,16 +5,23 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NewsApp.Core.Data;
 using NewsApp.Core.Entities;
-using NewsApp.Core.Entities.Enums;
-using NewsApp.Core.Services;
+using NewsApp.Core.Services.ArticlesServices;
+using NewsApp.Core.Services.ArticlesServices.Interfaces;
+using NewsApp.Core.Services.Auth;
+using NewsApp.Core.Services.Auth.Interfaces;
+using NewsApp.Core.Services.CategoriesServices;
+using NewsApp.Core.Services.CategoriesServices.Interfaces;
 using NewsApp.Core.Services.UsersServices;
 using NewsApp.Core.Services.UsersServices.Interfaces;
+using NewsApp.Core.Services.Utils;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<NewsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -23,8 +30,10 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<NewsDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-builder.Services.AddSingleton<AuthService>();
+builder.Services.AddScoped<IArticlesService, ArticlesService>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(g =>
@@ -60,16 +69,6 @@ builder.Services.AddSwaggerGen(g =>
     g.AddSecurityRequirement(securityRequirement);
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowDomains", builder =>
-    {
-        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -89,23 +88,19 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddAuthorization(options =>
+builder.Services.AddMemoryCache(options =>
 {
-    options.AddPolicy(PoliciesEnum.God.ToString(), policy =>
-        policy.RequireClaim(
-            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.Admin.ToString()
-        )
-    );
-    options.AddPolicy(PoliciesEnum.MustBeRegisteredAuthor.ToString(), policy => 
-        policy.RequireClaim(
-            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.Author.ToString(), RolesEnum.Admin.ToString()
-        )
-    );
-    options.AddPolicy(PoliciesEnum.MustBeRegistered.ToString(), policy => 
-        policy.RequireRole(
-            builder.Configuration["Jwt:AuthorizationClaim"] ?? "role", RolesEnum.User.ToString(), RolesEnum.Author.ToString(), RolesEnum.Admin.ToString()
-        )
-    );
+    options.ExpirationScanFrequency = TimeSpan.FromMinutes(5);
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowDomains", builder =>
+    {
+        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
 var app = builder.Build();

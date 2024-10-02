@@ -1,4 +1,4 @@
-﻿namespace NewsApp.Core.Services.UsersServices.Models
+﻿namespace NewsApp.Core.Services.Auth.Models
 {
     public class UserLogInRequestModel
     {

@@ -4,13 +4,13 @@ using NewsApp.Core.Data;
 using NewsApp.Core.Entities;
 using NewsApp.Core.Entities.Enums;
 
-namespace NewsApp.Core.Services
+namespace NewsApp.Core.Services.Utils
 {
     public static class InitializeData
     {
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();      
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             foreach (var roleName in Enum.GetValues(typeof(RolesEnum)).Cast<RolesEnum>().Select(r => r.ToString()))
             {
